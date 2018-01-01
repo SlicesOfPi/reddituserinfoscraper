@@ -24,7 +24,7 @@ After you have gotten a userlist.json file, which does not have to be full lengt
 
 ### JSON Structure
   The current structure is to the following:
-  ```json
+  ```
   'username': {
               timestamps: ["2015-08-03T16:48:04+00:00","2015-08-03T16:38:37+00:00","2015-08-01T16:45:01+00:00",...]
    },
@@ -36,7 +36,7 @@ After you have gotten a userlist.json file, which does not have to be full lengt
 ### JSON Structure todo
 Currently, the timestamps are stored unindependantly. In the future it is planned to revamp this so instead they are assigned to be they key, and carry the post/comment information. The information is planned to look around this structure:
 
-```json
+```
 
 'username': {
               '2015-08-03T16:48:04+00:00': {
