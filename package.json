@@ -1,0 +1,19 @@
+{
+  "name": "reddituserinfoscraper",
+  "version": "1.0.0",
+  "description": "Saves user data (post frequency, post date, post length) about user. ",
+  "main": "main.js",
+  "dependencies": {
+    "async": "^2.6.0",
+    "htmlparser": "^1.7.7",
+    "moment": "^2.20.1",
+    "soupselect": "^0.2.0",
+    "uuid": "^3.1.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "node main.js"
+  },
+  "author": "Andrew Humphreys",
+  "license": "MIT"
+}
