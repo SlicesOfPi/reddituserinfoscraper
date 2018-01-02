@@ -70,6 +70,7 @@ I am yet to create a "release", but these are more or less a more in depth guide
  * Set currentTimestamp's timestamp format to that of what reddit uses.
  * Add comment ID to post data.
  * Add tools to manipulate data.
+ * Clean up code a little more & add more commenting.
 
 ## 1.1.0 Changelog
 + Added setting so it fetches newest comments, not most upvoted. This is because the people who comment the most upvoted comments may have abnormal behavours. 
