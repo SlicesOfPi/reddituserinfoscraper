@@ -23,16 +23,24 @@ At that point, it will ask you if you would like to scrape for/the users. First 
 After you have gotten a userlist.json file, which does not have to be full length mind you, you can move onto method 2: scraping the users. This will go through each user, and scrape for the timestamps and yet to the post/comment title and/or body, and what type it is. It will record the before mentioned `userlist.json` file. For stopping it midway see notes#1. Once, if you have amazing internet, have scraped the entire list (hours, days, weeks it could take. A VPS is a good idea.), it.. will have finished. You can move onto analytics. See the JSON structure below.
 
 ### JSON Structure
-  The current structure is to the following:
+The current structure is similar to the following:
   ```
   'username': {
-              timestamps: ["2015-08-03T16:48:04+00:00","2015-08-03T16:38:37+00:00","2015-08-01T16:45:01+00:00",...]
+    "2015-08-03T16:48:04+00:00": "",
+    "2015-08-03T16:38:37+00:00": ""
    },
   'SlicesOfPi': {
-              timestamps: [...]
+    "2015-08-01T16:45:01+00:00": "",
+    "2015-08-03T16:48:04+00:00": ""
+  }
+  "i": {
+    "progress": "17",
+    "iteratee": "3"
   }
   
-  ```
+```
+Currently, username has the subkeys of timestamps which have an empty value. This will be replaced be yet another object later on, most likely built to the todo below. the "i" (stands for info, no reddit users i) contains two items.
+`progress` and `iteratee`. `Progress` is the in essence the user that the code is on, (a file `userlistordered.txt` contains the ordered list of users. Delete these before changing JSON data.) and the `iteratee` is a recently realized mispelling for `iteree` that counts how many pages of a user have been indexed.
 ### JSON Structure todo
 Currently, the timestamps are stored unindependantly. In the future it is planned to revamp this so instead they are assigned to be they key, and carry the post/comment information. The information is planned to look around this structure:
 
@@ -60,3 +68,19 @@ Currently, the timestamps are stored unindependantly. In the future it is planne
 
 ### #1
 Currently, (is yet to be fixed) stopping it randomly may or may not be fine. If it does not end up deleting the entire list. It is pretty much a chance based on your timing/if you stop it during the write process so be mindful of the timing and you should be okay. [Sorry for the bugs]. Next, if you timed it properlly it will have saved it's scraping location in the file and will be able to pickup later.
+
+#1.1.0 Changelog
++ Added setting so it fetches newest comments, not most upvoted. This is because the people who comment the most upvoted comments may have abnormal behavours. 
+- Removed all the eventEmitter dependancies.
++ Replaced all those eventEmitter setups with linear-function loops. Same concept, much cleaner and less error prone.
++ Seperated the respective fragments/pieces of my code in various files.
++ Added more commenting to what is happening for personal/other use. (Still unfinished).
++ Reworked a fair bit of code
++ Fixed the userlist.json wiping issue.
++ Changed the JSON up a little to support future updates
+
+Todo:
+ * Automatically delete userlistordered.txt on scrape [small release].
+ * Feature more data collection
+ * Add tools to manipulate the data.
+ * Fix iteratee to iteree
