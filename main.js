@@ -45,6 +45,7 @@ setTimeout(function(){ // There are usually a few warnings with depriciateds fou
 				promptInput('userlist.json already exists. If you would like to preserve it, stop this application or rename it.\n\x1b[31mTo overwrite, type "Red white and blue"[enter] (without the quotes).\x1b[0m\n',function(info2){
 					// ^ Tell the user that there already is a userlist file. Asks them for a phrase to overwrite it (Better safe than sorry).
 					if(info2=="Red white and blue"){ // Checks the input.
+						fs.unlinkSync('userlistordered.txt');
 						doMainCont();
 
 					}

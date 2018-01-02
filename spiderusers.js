@@ -7,6 +7,7 @@ var moment = require('moment');
 var events = require('events');
 var Readable = require('stream').Readable;
 var writing = false;
+var moment = require('moment');
 exports.spiderMain = function() {
 	if(fs.existsSync('userlist.json')){
 		// shh
@@ -40,13 +41,65 @@ exports.spiderMain = function() {
 					}
 					else{
 						// Start doing useful stuff around here.
-						select(dom, '.tagline time').forEach(function(element){
-							if(element.attribs.class == 'edited-timestamp'){
+						select(dom, '.comment').forEach(function(subDom){
+							select(subDom, '.entry').forEach(function(element){ // :not(.reddit-entry) currently does not work, so instead we have to filter below.
+								useDom(element,'comment');
+
+							});
+						});
+						select(dom, '.link').forEach(function(subDom){
+							karma = 0;
+							select(subDom, '.midcol .score.unvoted').forEach(function(karmDom){
+								karma = karmDom.attribs.title.valueOf();
+								console.log(karma);
+							});
+							select(subDom, '.entry').forEach(function(element){ // :not(.reddit-entry) currently does not work, so instead we have to filter below.
+								useDom(element,karma);
+
+							});
+						});
+							
+						function useDom(element,karma){
+							if(element.attribs.class.indexOf('reddit-entry') == -1){ // If the class attribute contains 'reddit-entry' it will not index it. This is because reddit-entry is the class of the side-bar of recently viewed posts.
+								var dateTime = ''; 
+								var anIterator = 0;
+								select(element, '.tagline time').forEach(function(child){
+									anIterator++;
+									if(anIterator==1){ 
+										userlist[user]['postdata'][child.attribs.datetime] = {};
+										dateTime = child.attribs.datetime;
+									}	
+								});
+								if(typeof karma == 'string'){
+									select(element, '.tagline span.score.unvoted').forEach(function(child){ // This should not be ran logged in, as cookies are not kept. This means everything will be unvoted.
+										userlist[user]['postdata'][dateTime]['karma'] = child.attribs.title.valueOf();
+
+									});
+								}
+								else{
+									//console.log('Karma: '+karma);
+									userlist[user]['postdata'][dateTime]['karma'] = karma;
+								}
+								select(element, '.tagline .edited-timestamp').forEach(function(child){
+									userlist[user]['postdata'][dateTime]['edited'] = child.attribs.datetime;
+								});
+								select(element, '.usertext .usertext-body .md p').forEach(function(child){
+									userlist[user]['postdata'][dateTime]['body'] = child.children[0].raw;
+									userlist[user]['postdata'][dateTime]['type'] = 'comment';
+								});
+								select(element, '.top-matter .title .title').forEach(function(child){
+									userlist[user]['postdata'][dateTime]['url'] = child.attribs.href;
+									userlist[user]['postdata'][dateTime]['title'] = child.children[0].raw;
+									userlist[user]['postdata'][dateTime]['type'] = 'post';
+								});
+								userlist[user]['postdata'][dateTime]['currentTimestamp'] = moment().toString();
+								
 							}
 							else{
-								userlist[user]['postdata'][element.attribs.datetime] = '';
+								//console.log(element.attribs.class+'[debugging no.2]');
 							}
-						});
+						}
+						//console.log(userlist[user]['postdata']);
 						console.log('\x1b[43m'+Object.keys(userlist[user]['postdata']).length+' Timestamp records for '+user+'.\x1b[0m');
 						userlist[user]['nextlink'] = 'forward';
 						select(dom, '.next-button a').forEach(function(element){
