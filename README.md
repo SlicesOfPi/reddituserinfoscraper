@@ -80,7 +80,7 @@ I am yet to create a "release", but these are more or less a more in depth guide
   * Karma
   * Current timestamp [Needs some fixing, but it "works"].
 
-Todo:
+#### Todo:
  * Still forgot to fix 'iteratee'. It is just a typo that doesn't fix it's variable position.
  * Fix the currentTimestamp for time diffs.
  * Add comment ID to post data.
@@ -96,7 +96,7 @@ Todo:
 + Fixed the userlist.json wiping issue.
 + Changed the JSON up a little to support future updates
 
-Todo:
+#### Todo:
  * Automatically delete userlistordered.txt on scrape [small release].
  * Feature more data collection
  * Add tools to manipulate the data.
