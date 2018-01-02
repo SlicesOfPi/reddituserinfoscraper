@@ -69,7 +69,24 @@ Currently, the timestamps are stored unindependantly. In the future it is planne
 ### #1
 Currently, (is yet to be fixed) stopping it randomly may or may not be fine. If it does not end up deleting the entire list. It is pretty much a chance based on your timing/if you stop it during the write process so be mindful of the timing and you should be okay. [Sorry for the bugs]. Next, if you timed it properlly it will have saved it's scraping location in the file and will be able to pickup later.
 
-#1.1.0 Changelog
+# Changelogs
+I am yet to create a "release", but these are more or less a more in depth guide to what I am pushing when pushing updates than the commit message.
+
+## 1.2.0 Changelog
++ Automatically delete userlistordered.txt on overwriting /r/all scrape.
++ Scrapes now for timestamps,
+  * Post title/URL
+  * Comment body
+  * Karma
+  * Current timestamp [Needs some fixing, but it "works"].
+
+Todo:
+ * Still forgot to fix 'iteratee'. It is just a typo that doesn't fix it's variable position.
+ * Fix the currentTimestamp for time diffs.
+ * Add comment ID to post data.
+ * Add tools to manipulate data.
+
+## 1.1.0 Changelog
 + Added setting so it fetches newest comments, not most upvoted. This is because the people who comment the most upvoted comments may have abnormal behavours. 
 - Removed all the eventEmitter dependancies.
 + Replaced all those eventEmitter setups with linear-function loops. Same concept, much cleaner and less error prone.
