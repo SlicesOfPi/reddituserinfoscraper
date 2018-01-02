@@ -24,25 +24,6 @@ After you have gotten a userlist.json file, which does not have to be full lengt
 
 ### JSON Structure
 The current structure is similar to the following:
-  ```
-  'username': {
-    "2015-08-03T16:48:04+00:00": "",
-    "2015-08-03T16:38:37+00:00": ""
-   },
-  'SlicesOfPi': {
-    "2015-08-01T16:45:01+00:00": "",
-    "2015-08-03T16:48:04+00:00": ""
-  }
-  "i": {
-    "progress": "17",
-    "iteratee": "3"
-  }
-  
-```
-Currently, username has the subkeys of timestamps which have an empty value. This will be replaced be yet another object later on, most likely built to the todo below. the "i" (stands for info, no reddit users i) contains two items.
-`progress` and `iteratee`. `Progress` is the in essence the user that the code is on, (a file `userlistordered.txt` contains the ordered list of users. Delete these before changing JSON data.) and the `iteratee` is a recently realized mispelling for `iteree` that counts how many pages of a user have been indexed.
-### JSON Structure todo
-Currently, the timestamps are stored unindependantly. In the future it is planned to revamp this so instead they are assigned to be they key, and carry the post/comment information. The information is planned to look around this structure:
 
 ```
 
@@ -54,7 +35,7 @@ Currently, the timestamps are stored unindependantly. In the future it is planne
                                             'currentTimestamp': '2017-12-31T22:54:45.064'
                },
               '2015-08-03T16:38:37+00:00': {
-                                            'type': 'post/link',
+                                            'type': 'post',
                                             'title': '10 new types of chicken nuggest at McDonalds',
                                             'link': 'https://mcdonalds.com/news/article/51256/new-chicken-nuggets-being-released.',
                                             'karma': '-624',
@@ -62,7 +43,12 @@ Currently, the timestamps are stored unindependantly. In the future it is planne
               }
 
             }
+
 ```
+__Note:__ currentTimestamp currently has an issue where instead of a proper timestamp it will output `moment([timestamp])`. It is also needed to get moment using the same timeStamp standard as reddit.
+Currently, username has the subkeys of timestamps which have an empty value. This will be replaced be yet another object later on, most likely built to the todo below. the "i" (stands for info, no reddit users i) contains two items.
+`progress` and `iteratee`. `Progress` is the in essence the user that the code is on, (a file `userlistordered.txt` contains the ordered list of users. Delete these before changing JSON data.) and the `iteratee` is a recently realized mispelling for `iteree` that counts how many pages of a user have been indexed.
+
 
 # Notes
 
@@ -83,6 +69,7 @@ I am yet to create a "release", but these are more or less a more in depth guide
 #### Todo:
  * Still forgot to fix 'iteratee'. It is just a typo that doesn't fix it's variable position.
  * Fix the currentTimestamp for time diffs.
+ * Set currentTimestamp's timestamp format to that of what reddit uses.
  * Add comment ID to post data.
  * Add tools to manipulate data.
 
