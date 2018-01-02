@@ -49,9 +49,6 @@ __Note:__ currentTimestamp currently has an issue where instead of a proper time
 Currently, username has the subkeys of timestamps which have an empty value. This will be replaced be yet another object later on, most likely built to the todo below. the "i" (stands for info, no reddit users i) contains two items.
 `progress` and `iteratee`. `Progress` is the in essence the user that the code is on, (a file `userlistordered.txt` contains the ordered list of users. Delete these before changing JSON data.) and the `iteratee` is a recently realized mispelling for `iteree` that counts how many pages of a user have been indexed.
 
-
-# Notes
-
 ### #1
 Currently, (is yet to be fixed) stopping it randomly may or may not be fine. If it does not end up deleting the entire list. It is pretty much a chance based on your timing/if you stop it during the write process so be mindful of the timing and you should be okay. [Sorry for the bugs]. Next, if you timed it properlly it will have saved it's scraping location in the file and will be able to pickup later.
 
@@ -65,6 +62,7 @@ I am yet to create a "release", but these are more or less a more in depth guide
   * Comment body
   * Karma
   * Current timestamp [Needs some fixing, but it "works"].
++ Fixed issue where caused when closing during write to userlist.json.
 
 #### Todo:
  * Still forgot to fix 'iteratee'. It is just a typo that doesn't fix it's variable position.
