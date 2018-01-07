@@ -93,7 +93,6 @@ exports.spiderMain = function() {
 								});
 								select(element, '.entry .reportform').forEach(function(child){
 									userlist[user]['postdata'][dateTime]['id'] = child.attribs.class.replace('reportform report-','');
-									console.log(userlist[user]['postdata'][dateTime]['id']);
 									// https://www.reddit.com/api/info.json?id=
 									// https://www.reddit.com/api/info?id=t1_dr8kbyo
 									// Either/or. One returns useful JSON data the other has to be parsed but is easily human-readable.
