@@ -32,14 +32,17 @@ The current structure is similar to the following:
                                             'type': 'comment',
                                             'body': "Wow That is sooo cool. \"I like pie\" was my favorite part.",
                                             'karma': '162',
-                                            'currentTimestamp': '2017-12-31T22:54:45.064'
+                                            'currentTimestamp': '2017-12-31T22:54:45.064',
+                                            'id': 't1_dr8kbyo'
                },
               '2015-08-03T16:38:37+00:00': {
+                                            'edited': '...someISO8601reddittimestamp',
                                             'type': 'post',
                                             'title': '10 new types of chicken nuggest at McDonalds',
                                             'link': 'https://mcdonalds.com/news/article/51256/new-chicken-nuggets-being-released.',
                                             'karma': '-624',
-                                            'currentTimestamp': '2017-12-31T22:55:36.574' 
+                                            'currentTimestamp': '2017-12-31T22:55:36.574',
+                                            'id': 't1_dr8kbyo'
               }
 
             }
@@ -54,6 +57,18 @@ Currently, (is yet to be fixed) stopping it randomly may or may not be fine. If 
 
 # Changelogs
 I am yet to create a "release", but these are more or less a more in depth guide to what I am pushing when pushing updates than the commit message.
+
+## 1.2.1 Changelog
++ Fixed 'iteratee'
++ Fixed timestamps.
++ Standardized my timstamps to ISO8601 standard that reddit uses.
++ Added comment ID to scrape data
+
+#### Todo:
+  * Add better error handling, so it will restart after a failure automatically (at least a few times and waiting a bit). (Clusters)
+  * Clean up code and add more commenting.
+  * Add tools to manipulate data
+
 
 ## 1.2.0 Changelog
 + Automatically delete userlistordered.txt on overwriting /r/all scrape.
