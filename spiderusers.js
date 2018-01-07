@@ -5,7 +5,7 @@ var select = require('soupselect').select;
 var uuidv4 = require('uuid/v4');
 var moment = require('moment');
 var events = require('events');
-var Readable = require('stream').Readable;
+var Readable = require('stream').Readable; 
 var writing = false;
 var moment = require('moment');
 exports.spiderMain = function() {
@@ -51,7 +51,6 @@ exports.spiderMain = function() {
 							karma = 0;
 							select(subDom, '.midcol .score.unvoted').forEach(function(karmDom){
 								karma = karmDom.attribs.title.valueOf();
-								console.log(karma);
 							});
 							select(subDom, '.entry').forEach(function(element){ // :not(.reddit-entry) currently does not work, so instead we have to filter below.
 								useDom(element,karma);
@@ -92,7 +91,14 @@ exports.spiderMain = function() {
 									userlist[user]['postdata'][dateTime]['title'] = child.children[0].raw;
 									userlist[user]['postdata'][dateTime]['type'] = 'post';
 								});
-								userlist[user]['postdata'][dateTime]['currentTimestamp'] = moment().toString();
+								select(element, '.entry .reportform').forEach(function(child){
+									userlist[user]['postdata'][dateTime]['id'] = child.attribs.class.replace('reportform report-','');
+									console.log(userlist[user]['postdata'][dateTime]['id']);
+									// https://www.reddit.com/api/info.json?id=
+									// https://www.reddit.com/api/info?id=t1_dr8kbyo
+									// Either/or. One returns useful JSON data the other has to be parsed but is easily human-readable.
+								});
+								userlist[user]['postdata'][dateTime]['currentTimestamp'] = moment().utc().format().toString(); // The format should defaul to ISO8601 standard, which is what reddit uses. Although it will look a little different, +00:00 and Z both mean "UTC" timestamp.
 								
 							}
 							else{
@@ -116,12 +122,12 @@ exports.spiderMain = function() {
 		}
 	}
 	var userIndex = []; // Define a list fo the user-index.
-	if(typeof userlist['i'] == 'undefined'||typeof userlist['i']['iteratee'] == 'undefined'||typeof userlist['i']['progress'] == 'undefined'){ // This line right here, ensures that if the i (for info) tag in the data set is not existing, it will be.
+	if(typeof userlist['i'] == 'undefined'||typeof userlist['i']['iteree'] == 'undefined'||typeof userlist['i']['progress'] == 'undefined'){ // This line right here, ensures that if the i (for info) tag in the data set is not existing, it will be.
 		// It also writes the other desired variables, that may be needed. (The iterations, and progress).
 		// This process is similar to what Steam does with their app-manifest on downloads where it saves the bytes as it goes.
 		console.log('\x1b[33mSet progress info to zero.\x1b[0m');
 		userlist['i'] = {};
-		userlist['i']['iteratee'] = 0;
+		userlist['i']['iteree'] = 0;
 		userlist['i']['progress'] = 0;
 	}
 	setuserIndex = function(callback){
@@ -140,8 +146,7 @@ exports.spiderMain = function() {
 		callback();
 	}
 	setuserIndex(function(){
-		console.log(userIndex.length);
-		loopUsers(userlist['i']['progress'],userlist['i']['iteratee']); // Right here it starts the loop right up, and it should maintain itself.
+		loopUsers(userlist['i']['progress'],userlist['i']['iteree']); // Right here it starts the loop right up, and it should maintain itself.
 	});
 
 	//console.log(userIndex);
@@ -159,7 +164,7 @@ exports.spiderMain = function() {
 		}
 		spiderUser(userLink, userIndex[j],function(){
 			userlist['i']['progress'] = j; // Update the progress/user so if the program is stopped it can resume.
-			userlist['i']['iteratee'] = k; // Updates the section of the user it is on.
+			userlist['i']['iteree'] = k; // Updates the section of the user it is on.
 			//console.log(userlist['22051777']['nextlink']);
 			//fs.writeFileSync('userlist.json',JSON.stringify(userlist)); // It is important to keep the file updated. Incase if it gets interrupted it is always possible to recover. (With some manual work involved of course.)
 			var s = new Readable(); // Creates a new readable stream.
