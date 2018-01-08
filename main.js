@@ -15,6 +15,22 @@
 // moment.js - http://Momentjs.com - moment (github)
 // Async - Caolan McMahon - http://caolan.github.io/async/docs.htm - caolan (github) <-- Async is AMAZING godsend! I need to rework much of this later to use it more. Emitters are NOT the optimal solution.
 
+var cluster = require('cluster');
+
+
+if (cluster.isMaster){
+	cluster.fork();
+	cluster.on('exit', function(wkr,code,signal){
+		if(signal!="SIGINT"){ // SIGINT is the CtrL+C exit code. This sets it so it won't try and fork on user-exit.
+			console.log('\x1b[31mCluster died! Starting a new one.\x1b[0m');
+			cluster.fork();
+		}
+
+	});
+}
+
+else { // Here I opted not to indent all the following as it will make the code that would normally be most high level, well.. indented. It is best for my personal organization and likely others to do it this way.
+
 
 var fs = require('fs');
 var http = require('https');
@@ -38,39 +54,56 @@ function doMainCont(){
 }
 
 setTimeout(function(){ // There are usually a few warnings with depriciateds found in libraries yet to be updated. This is to make sure these messages are AFTER.
-	promptInput('Would you like to (1)Spider for users or (2)Spider the users?[Enter 1 or 2]:', function(information){ // information was data but I later used that in a higher scope which was messing with the code.
-		if(information=="1"){ // If the user decides to spider FOR users:
-			console.log('Spidering for users.'); // Tell them that everything's working and following their command.
-			if(fs.existsSync('userlist.json')){ // Checks if the userlist already exists for overwrite protection.
-				promptInput('userlist.json already exists. If you would like to preserve it, stop this application or rename it.\n\x1b[31mTo overwrite, type "Red white and blue"[enter] (without the quotes).\x1b[0m\n',function(info2){
-					// ^ Tell the user that there already is a userlist file. Asks them for a phrase to overwrite it (Better safe than sorry).
-					if(info2=="Red white and blue"){ // Checks the input.
-						fs.unlinkSync('userlistordered.txt');
-						doMainCont();
+	var didFail = false;
+	if(fs.existsSync('userlist.json')){
+		myObj = JSON.parse(fs.readFileSync('userlist.json'));
+		if(typeof myObj['i'] != 'undefined' && myObj['i']['stopUngracfully'] == 'true'){
+			didFail = true;
+		}
+	}
+	if(!didFail){ // If it failed previously (on option 2. Option one is more forgiving and short.), then it will restart without this stuff.
+		promptInput('Would you like to (1)Spider for users or (2)Spider the users?[Enter 1 or 2]:', function(information){ // information was data but I later used that in a higher scope which was messing with the code.
+			if(information=="1"){ // If the user decides to spider FOR users:
+				console.log('Spidering for users.'); // Tell them that everything's working and following their command.
+				if(fs.existsSync('userlist.json')){ // Checks if the userlist already exists for overwrite protection.
+					promptInput('userlist.json already exists. If you would like to preserve it, stop this application or rename it.\n\x1b[31mTo overwrite, type "Red white and blue"[enter] (without the quotes).\x1b[0m\n',function(info2){
+						// ^ Tell the user that there already is a userlist file. Asks them for a phrase to overwrite it (Better safe than sorry).
+						if(info2=="Red white and blue"){ // Checks the input.
+							if(fs.existsSync('userlistordered.txt')){
+								fs.unlinkSync('userlistordered.txt');
+							}
+							doMainCont();
 
-					}
-					else{
-						console.log("\x1b[31mThat didn't work! Try again.\x1b[0m");
-						process.exit();
-					}
-				});
+						}
+						else{
+							console.log("\x1b[31mThat didn't work! Try again.\x1b[0m");
+							process.exit();
+						}
+					});
 
+				}
+				else{
+					doMainCont();
+				}
+				
+			}
+			else if(information=='2'){
+				console.log('Spidering the users.');
+				spiderusers.spiderMain();
+				
 			}
 			else{
-				doMainCont();
+				console.log("\x1b[31mThat didn't work! Try again.\x1b[0m");
+				process.exit();
 			}
-			
-		}
-		else if(information=='2'){
-			console.log('Spidering the users.');
-			spiderusers.spiderMain();
-			
-		}
-		else{
-			console.log("\x1b[31mThat didn't work! Try again.\x1b[0m");
-			process.exit();
-		}
-	});
+		});
+
+	
+	}
+	else{
+		console.log('\x1b[31mUngracfully shut down last time. Resuming automatically. If this for some reason is wrong, gracefully shutdown with ctrl+c and restart.\x1b[0m');
+		spiderusers.spiderMain(); // Spiders the users after a drop-off.
+	}
 
 },75);
 	
@@ -91,3 +124,4 @@ function promptInput(question, callback) {
 	});
 }
 
+}
