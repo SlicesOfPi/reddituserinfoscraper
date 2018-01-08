@@ -59,7 +59,7 @@ I am yet to create a "release", but these are more or less a more in depth guide
 + Added a better error handling system.
 
 #### Todo:
- * Clean up code and add more commenting.
+ * Clean up code and add more commenting. (Commenting close to done.)
  * Add tools to manipulate data
  * Setup error handling system to count failures and stop trying after X many.
  * Setup error handling system to have a delay before retrying so it doesn't spam reddit, or your LAN if that.
