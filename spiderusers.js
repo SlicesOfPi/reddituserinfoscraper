@@ -8,7 +8,12 @@ var events = require('events');
 var Readable = require('stream').Readable; 
 var writing = false;
 var moment = require('moment');
+if(fs.existsSync('userlist.json')){
+	var userlist = JSON.parse(fs.readFileSync('userlist.json')); // Delcares it on a global scope so it works with the process.exit();
+}
+else userlist = {};
 exports.spiderMain = function() {
+
 	if(fs.existsSync('userlist.json')){
 		// shh
 	}
@@ -18,7 +23,6 @@ exports.spiderMain = function() {
 		process.exit();
 	}
 	userlist = JSON.parse(fs.readFileSync('userlist.json'));
-
 	function spiderUser(url,user,callback){
 		if(typeof userlist[user]['postdata'] == 'undefined'){
 			userlist[user]['postdata'] = {};
@@ -128,6 +132,10 @@ exports.spiderMain = function() {
 		userlist['i'] = {};
 		userlist['i']['iteree'] = 0;
 		userlist['i']['progress'] = 0;
+		userlist['i']['stopUngracfully'] = 'true';
+	}
+	else {
+		userlist['i']['stopUngracfully'] = 'true';
 	}
 	setuserIndex = function(callback){
 		if(fs.existsSync('userlistordered.txt')){ // if the list already exists take it, and parse it into a list.
@@ -166,17 +174,7 @@ exports.spiderMain = function() {
 			userlist['i']['iteree'] = k; // Updates the section of the user it is on.
 			//console.log(userlist['22051777']['nextlink']);
 			//fs.writeFileSync('userlist.json',JSON.stringify(userlist)); // It is important to keep the file updated. Incase if it gets interrupted it is always possible to recover. (With some manual work involved of course.)
-			var s = new Readable(); // Creates a new readable stream.
-			var wStream = fs.createWriteStream('userlist.json', { flags : 'w' }); // Creates a new writable stream writing it's input to userlist.json.
-			s._read = function noop() {}; 
-			var content = JSON.stringify(userlist);
-			writing = true;
-			s.push(content); 
-			s.push(null);
-			s.pipe(wStream);
-			wStream.on('close', function () {
-				writing = false;
-			});
+			writeList(userlist, 'userlist.json'); // My custom defined function that utilizes streams so it can write a.. rather large file without issues like fs.writeFileSync();.
 
 			
 			if(userlist[userIndex[j]]['nextlink']=='forward'){ // If the user has no next button, the link will be set to 'forward'. To stop it from trying to lookup the domain 'forward' (and failing in an exception) it will call the next function to go.
@@ -214,7 +212,7 @@ exports.spiderMain = function() {
 // });
 
 
-process.on ("SIGINT", function(){ // SIGINT is called on ctrl+c exit. This stops that from happening, while if the user wants to do something like `killall nodejs` it'll still work (or shut the terminal, etc).
+process.on("SIGINT", function(){ // SIGINT is called on ctrl+c exit. This stops that from happening, while if the user wants to do something like `killall nodejs` it'll still work (or shut the terminal, etc).
 	// Peacful exit when ctrl+c but less intended to be peacful exits are unpeacful and risky.
 	if(writing){ // Writing will be set to true once it starts writing to the file.
 	    console.log('\x1b[31mCurrently writing to the file! Waiting for write to finish to avoid corruption.\x1b[0m'); // Alert the user what's happening so they don't freak out and hit the X if it takes a while to write.
@@ -229,11 +227,30 @@ process.on ("SIGINT", function(){ // SIGINT is called on ctrl+c exit. This stops
 	    	}
 	    }
 	    testWriting(function(){
-	    	process.exit(); // The callback is to exit, so once it stops writing (15ms max after that happens) it will stop.
+	    	if(typeof userlist['i'] != 'undefined'){
+	    		userlist['i']['stopUngracfully'] = 'false';
+	    		writeList(userlist, 'userlist.json',function(){
+	    			process.exit();
+	    		});
+	    	}
+	    	else{
+	    		process.exit(); // The callback is to exit, so once it stops writing (15ms max after that happens) it will stop.
+	    	}
+	    	
 	    });
     }
     else{ // If it is not writing, then it will exit.
-    	process.exit();
+    	if(typeof userlist['i'] != 'undefined'){
+    		userlist['i']['stopUngracfully'] = 'false';
+    		writeList(userlist, 'userlist.json', function(){
+    			process.exit();
+    		});
+
+    	}
+    	else{
+    		process.exit();
+    	}
+    	
     }
 });
 
@@ -244,3 +261,20 @@ process.on ("SIGINT", function(){ // SIGINT is called on ctrl+c exit. This stops
 //     return null;
 //   }
 // }
+
+function writeList(userlist, filepath, callback){
+	var s = new Readable(); // Creates a new readable stream.
+	var wStream = fs.createWriteStream(filepath, { flags : 'w' }); // Creates a new writable stream writing it's input to userlist.json.
+	s._read = function noop() {}; 
+	var content = JSON.stringify(userlist);
+	writing = true;
+	s.push(content); 
+	s.push(null);
+	s.pipe(wStream);
+	wStream.on('close', function () {
+		writing = false;
+		if(typeof callback != 'undefined'){
+			callback();
+		}
+	});
+}
