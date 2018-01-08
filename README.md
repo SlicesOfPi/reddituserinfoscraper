@@ -48,15 +48,21 @@ The current structure is similar to the following:
             }
 
 ```
-__Note:__ currentTimestamp currently has an issue where instead of a proper timestamp it will output `moment([timestamp])`. It is also needed to get moment using the same timeStamp standard as reddit.
-Currently, username has the subkeys of timestamps which have an empty value. This will be replaced be yet another object later on, most likely built to the todo below. the "i" (stands for info, no reddit users i) contains two items.
-`progress` and `iteratee`. `Progress` is the in essence the user that the code is on, (a file `userlistordered.txt` contains the ordered list of users. Delete these before changing JSON data.) and the `iteratee` is a recently realized mispelling for `iteree` that counts how many pages of a user have been indexed.
 
 ### #1
 Currently, (is yet to be fixed) stopping it randomly may or may not be fine. If it does not end up deleting the entire list. It is pretty much a chance based on your timing/if you stop it during the write process so be mindful of the timing and you should be okay. [Sorry for the bugs]. Next, if you timed it properlly it will have saved it's scraping location in the file and will be able to pickup later.
 
 # Changelogs
 I am yet to create a "release", but these are more or less a more in depth guide to what I am pushing when pushing updates than the commit message.
+
+## 1.2.2 Changelog
++ Added a better error handling system.
+
+#### Todo:
+ * Clean up code and add more commenting.
+ * Add tools to manipulate data
+ * Setup error handling system to count failures and stop trying after X many. 
+ * Setup error handling system to have a delay before retrying so it doesn't spam reddit, or your LAN if that.
 
 ## 1.2.1 Changelog
 + Fixed 'iteratee'
