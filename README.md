@@ -1,12 +1,12 @@
 # reddituserinfoscraper
-This is a tool (in the works) that scrapes 
+This is a tool (in the works) that scrapes
   * users
   * timestamps
   * post/comment title and/or body [TO-DO]
   * post/comment type (which is it?) [To-DO]
   * post/comment Karma
   * Current timestamp for time comparisons (likely to do with karma).
-  
+
 It is intended to include a few other data-manipulation tools later on.
 
 # Usage
@@ -61,7 +61,7 @@ I am yet to create a "release", but these are more or less a more in depth guide
 #### Todo:
  * Clean up code and add more commenting.
  * Add tools to manipulate data
- * Setup error handling system to count failures and stop trying after X many. 
+ * Setup error handling system to count failures and stop trying after X many.
  * Setup error handling system to have a delay before retrying so it doesn't spam reddit, or your LAN if that.
 
 ## 1.2.1 Changelog
@@ -94,7 +94,7 @@ I am yet to create a "release", but these are more or less a more in depth guide
  * Clean up code a little more & add more commenting.
 
 ## 1.1.0 Changelog
-+ Added setting so it fetches newest comments, not most upvoted. This is because the people who comment the most upvoted comments may have abnormal behavours. 
++ Added setting so it fetches newest comments, not most upvoted. This is because the people who comment the most upvoted comments may have abnormal behavours.
 - Removed all the eventEmitter dependancies.
 + Replaced all those eventEmitter setups with linear-function loops. Same concept, much cleaner and less error prone.
 + Seperated the respective fragments/pieces of my code in various files.
