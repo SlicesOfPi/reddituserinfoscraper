@@ -13,7 +13,6 @@
 // htmlparser - Chris Winberry - tautologistics (github).
 // soupselect - Harry Fuecks - harryf (github)
 // moment.js - http://Momentjs.com - moment (github)
-// Async - Caolan McMahon - http://caolan.github.io/async/docs.htm - caolan (github) <-- Async is AMAZING godsend! I need to rework much of this later to use it more. Emitters are NOT the optimal solution.
 
 var cluster = require('cluster');
 
