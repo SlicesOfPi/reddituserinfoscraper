@@ -58,12 +58,14 @@ I am yet to create a "release", but these are more or less a more in depth guide
 ## 1.2.2 Changelog
 + Added a better error handling system.
 
+
 #### Todo:
  * Clean up code and add more commenting. (Commenting close to done.)
  * Add tools to manipulate data
  * Setup error handling system to count failures and stop trying after X many.
  * Setup error handling system to have a delay before retrying so it doesn't spam reddit, or your LAN if that.
-
+ * Fix issue where intentional process.exit(); calls will restarting the application. Givin the intentional shutdown. A full functionality restart does NOT happen but it does leave you at the option page.
+ * Fix where I had .valueOf(); when I should've used something like Number();
 ## 1.2.1 Changelog
 + Fixed 'iteratee'
 + Fixed timestamps.
