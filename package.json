@@ -1,0 +1,31 @@
+{
+  "name": "reddituserinfoscraper",
+  "version": "2.0.0",
+  "description": "New and rewritten version of Reddit User Info Scraper. Optimizes preformance, speed, bandwith usage due to a realization that reddit publically offers the .json used to load pages.",
+  "main": "./html/main.html",
+  "dependencies": {
+    "moment": "^2.20.1"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SlicesOfPi/reddituserinfoscraper.git"
+  },
+  "author": "Andrew Humphreys",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/SlicesOfPi/reddituserinfoscraper/issues"
+  },
+  "homepage": "https://github.com/SlicesOfPi/reddituserinfoscraper#readme",
+  "window": {
+    "title": "Reddit User Info Scraper",
+    "icon": "link.png",
+    "toolbar": true,
+    "frame": true,
+    "width": 1000,
+    "height": 640
+  }
+}
