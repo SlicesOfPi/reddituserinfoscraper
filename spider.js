@@ -4,7 +4,6 @@ var fs = require('fs');
 var https = require('https');
 var events = require('events');
 var eventEmitter = new events.EventEmitter();
-var objTraverse = require('obj-traverse/lib/obj-traverse'); // As of writing, this will save a lot of time messing around with recursion.
 
 exports.spiderUsers = function(defaultFile, alternateFile, pages, userlimit, document){
   var progressBox = document.getElementById('progress-box');
@@ -93,6 +92,7 @@ exports.spiderUsers = function(defaultFile, alternateFile, pages, userlimit, doc
 
   iterateGet(0);
   var scrapePages = function(linkChain) {
+    var finalUserList = [];
     var totalAuthors = 0;
     var doneGetPage = false;
     function getPage(post, callback){
@@ -118,6 +118,7 @@ exports.spiderUsers = function(defaultFile, alternateFile, pages, userlimit, doc
               let username = uniqueify(authors)[author].replace('"author":', "").replace('"','').replace('"',''); // Ugly, lazy but.. it works.
               document.getElementById('users').innerHTML += '<li id="'+username+'" class="user">'+username+'</li>';
               document.getElementById('usercount').innerHTML = "&nbsp;"+(totalAuthors+1)+"&nbsp;";
+              finalUserList.push(username);
             }
             else{
               doneGetPage = true;
@@ -141,6 +142,10 @@ exports.spiderUsers = function(defaultFile, alternateFile, pages, userlimit, doc
             syncDoLinks(x+1);
           }
           else {
+            var object = {
+              userlist: finalUserList
+            }
+            fs.writeFileSync(fileName, JSON.stringify(object));
             document.getElementById('is_spidering').value = "false";
           }
         });
