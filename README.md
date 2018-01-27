@@ -16,7 +16,7 @@ Recently, a realization that most Reddit pages you can add .json (before GET req
 + And release with files included for the impenitent (Right now it isn't packed up).
 
 ## Usage:
-  ###First off, you must clone/download it..
+  ### First off, you must clone/download it..
   ##### Windows (With git installed)
   `> git clone https://github.com/SlicesOfPi/reddituserinfoscraper.git` (or just download the .ZIP & extract.)
   ##### Linux/Mac (with git installed)
