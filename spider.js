@@ -3,7 +3,6 @@
 var fs = require('fs');
 var https = require('https');
 var events = require('events');
-var eventEmitter = new events.EventEmitter();
 
 exports.spiderUsers = function(defaultFile, alternateFile, pages, userlimit, document){
   var progressBox = document.getElementById('progress-box');
